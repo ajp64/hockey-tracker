@@ -30,6 +30,6 @@ public class PlayerRepositoryStubImpl implements PlayerRepository {
         Team playerTeam = new Team("Dragons");
         Date dob = new Date(2000, Calendar.DECEMBER, 13);
 
-        return new Player("id", "player name", dob, "forward", playerTeam, "player.jpg", statList);
+        return new Player("id", "player name", dob, "center", playerTeam, "player.jpg", statList);
     }
 }
