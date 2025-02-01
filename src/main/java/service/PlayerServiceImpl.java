@@ -1,11 +1,12 @@
 package service;
 
 import aspects.LogExecution;
-import aspects.SecurityCheck;
 import model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.PlayerRepository;
+
+import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -26,5 +27,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player getPlayer(String playerId) {
         return this.playerRepository.getPlayer(playerId);
+    }
+
+    @Override
+    public List<Player> getPlayers() {
+        return this.playerRepository.getPlayers();
     }
 }

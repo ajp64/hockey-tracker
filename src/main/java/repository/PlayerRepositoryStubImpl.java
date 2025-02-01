@@ -7,29 +7,32 @@ import model.Player;
 import model.Team;
 import org.springframework.stereotype.Repository;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class PlayerRepositoryStubImpl implements PlayerRepository {
+
+    private List<Player> playerList = new ArrayList<>();
     public PlayerRepositoryStubImpl() {
     }
 
     @Override
     @SecurityCheck
     public void storePlayer(Player newPlayer) {
-        System.out.println("Stored player: " + newPlayer.toString());
+        playerList.add(newPlayer);
     }
 
     @Override
     public Player getPlayer(String playerId) {
-        ArrayList<GameStats> statList = new ArrayList<>();
-        GameStats stats = new GameStats("stats");
-        statList.add(stats);
-        Team playerTeam = new Team("Dragons");
-        Date dob = new Date(2000, Calendar.DECEMBER, 13);
+        return playerList.get(0);
+    }
 
-        return new Player("id", "player name", dob, "center", playerTeam, "player.jpg", statList);
+    @Override
+    public List<Player> getPlayers(){
+        return playerList;
     }
 }
