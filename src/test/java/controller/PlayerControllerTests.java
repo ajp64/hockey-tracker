@@ -1,6 +1,7 @@
 package controller;
 
 import model.Player;
+import model.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import service.PlayerService;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +32,8 @@ public class PlayerControllerTests {
     @Test
     void testViewPlayers()
     {
-        List<Player> expected = List.of();
+        List<Player> expected = List.of(
+                new Player("uuid", "name", new Date(), "position", new Team("team"), "image", null));
 
         when(mockPlayerService.getPlayers()).thenReturn(expected);
 
