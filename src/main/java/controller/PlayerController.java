@@ -1,49 +1,38 @@
 package controller;
 
 import model.Player;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import service.PlayerService;
 
-import java.sql.Date;
+import java.util.List;
 
-@Controller
+@RestController
 public class PlayerController {
 
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
     public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
     @GetMapping("players")
-    public String viewPlayers(Model model){
+    public ResponseEntity<List<Player>> viewPlayers(){
         var players = playerService.getPlayers();
-        model.addAttribute("players", players);
 
-        return "display.html";
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(players);
     }
 
     @PostMapping("players")
-    public String createPlayer(@RequestParam String name,
-                               @RequestParam String dob,
-                               @RequestParam String team,
-                               @RequestParam String position,
-                               Model model){
-        Player p = new Player(null,null,null,null,null,null,null );
-        p.setName(name);
-        p.setPosition(position);
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player){
+        playerService.createPlayer(player);
 
-        playerService.createPlayer(p);
-
-        var players = playerService.getPlayers();
-        model.addAttribute("players", players);
-
-        return "display.html";
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(player);
     }
 
 }

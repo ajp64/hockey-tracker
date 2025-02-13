@@ -1,6 +1,7 @@
 package service;
 
 import aspects.LogExecution;
+import exceptions.NoPlayerNameException;
 import model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,14 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     @LogExecution
-    public void createPlayer(Player newPlayer) {
-        this.playerRepository.storePlayer(newPlayer);
+    public void createPlayer(Player newPlayer)
+    {
+        if (newPlayer.getName() != null) {
+            this.playerRepository.storePlayer(newPlayer);
+        }
+        else {
+            throw new NoPlayerNameException();
+        }
     }
 
     @Override
