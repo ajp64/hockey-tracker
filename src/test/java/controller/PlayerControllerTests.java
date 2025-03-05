@@ -1,7 +1,7 @@
 package controller;
 
-import model.Player;
-import model.Team;
+import com.rest.server.model.Player;
+import com.rest.server.model.PlayerListResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import service.PlayerService;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -33,13 +33,23 @@ public class PlayerControllerTests {
     void testViewPlayers()
     {
         List<Player> expected = List.of(
-                new Player("uuid", "name", new Date(), "position", new Team("team"), "image", null));
+                new Player("uuid", "name"));
 
         when(mockPlayerService.getPlayers()).thenReturn(expected);
 
-        ResponseEntity<List<Player>> actual = testSubject.viewPlayers();
+        ResponseEntity<PlayerListResponse> actual = testSubject.listPlayers();
 
-        assertThat(actual.getBody()).isEqualTo(expected);
+        assertThat(Objects.requireNonNull(actual.getBody()).getPlayerList()).isEqualTo(expected);
+    }
+
+    @Test
+    void testCreatePlayer()
+    {
+        Player expected = new Player("uuid", "name");
+
+        ResponseEntity<Player> actual = testSubject.createPlayer(expected);
+
+        assertThat(Objects.requireNonNull(actual.getBody())).isEqualTo(expected);
     }
 
 }

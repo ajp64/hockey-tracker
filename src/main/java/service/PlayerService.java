@@ -1,6 +1,6 @@
 package service;
 
-import model.Player;
+import com.rest.server.model.Player;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Player {
@@ -14,18 +13,16 @@ public class Player {
                 ", position='" + position + '\'' +
                 ", team=" + team +
                 ", image='" + image + '\'' +
-                ", stats=" + stats +
                 '}';
     }
 
-    public Player(String uuid, String name, Date dob, String position, Team team, String image, ArrayList<GameStats> stats) {
+    public Player(String uuid, String name, Date dob, String position, Team team, String image) {
         this.uuid = uuid;
         this.name = name;
         this.dob = dob;
         this.position = position;
         this.team = team;
         this.image = image;
-        this.stats = stats;
     }
 
     private String uuid;
@@ -34,7 +31,6 @@ public class Player {
     private String position;
     private Team team;
     private String image;
-    private ArrayList<GameStats> stats;
 
     public String getName() {
         return name;

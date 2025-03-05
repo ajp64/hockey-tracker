@@ -1,16 +1,15 @@
 package controller;
 
-import model.Player;
+import com.rest.server.api.PlayersApi;
+import com.rest.server.model.Player;
+import com.rest.server.model.PlayerListResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.PlayerService;
 
-import java.util.List;
-
 @RestController
-public class PlayerController {
-
+public class PlayerController implements PlayersApi {
     private final PlayerService playerService;
 
     public PlayerController(PlayerService playerService) {
@@ -18,12 +17,12 @@ public class PlayerController {
     }
 
     @GetMapping("players")
-    public ResponseEntity<List<Player>> viewPlayers(){
+    public ResponseEntity<PlayerListResponse> listPlayers(){
         var players = playerService.getPlayers();
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(players);
+                .body(new PlayerListResponse(players));
     }
 
     @PostMapping("players")
@@ -34,5 +33,4 @@ public class PlayerController {
                 .status(HttpStatus.ACCEPTED)
                 .body(player);
     }
-
 }

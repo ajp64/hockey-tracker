@@ -1,22 +1,16 @@
 package repository;
 
-import aspects.LogExecution;
 import aspects.SecurityCheck;
-import model.GameStats;
-import model.Player;
-import model.Team;
+import com.rest.server.model.Player;
 import org.springframework.stereotype.Repository;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public class PlayerRepositoryStubImpl implements PlayerRepository {
 
-    private List<Player> playerList = new ArrayList<>();
+    private final List<Player> playerList = new ArrayList<>();
     public PlayerRepositoryStubImpl() {
     }
 

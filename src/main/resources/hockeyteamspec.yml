@@ -1,0 +1,80 @@
+openapi: "3.0.0"
+info:
+  title: HockeyTrackerApi
+  version: 1.0.0
+  description: API for hockey tracker app
+paths:
+  /players:
+    get:
+      operationId: listPlayers
+      tags: [Players]
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerListResponse"
+          description: 'OK'
+    post:
+      operationId: createPlayer
+      tags: [CreatePlayer]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Player"
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+          description: 'OK'
+components:
+  schemas:
+    Player:
+      type: object
+      required:
+        - uuid
+        - name
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        dob:
+          type: string
+        position:
+          type: string
+        team:
+          type: object
+          items:
+            $ref: "#/components/schemas/Player"
+        image:
+          type: string
+    PlayerListResponse:
+      type: object
+      required:
+        - playerList
+      properties:
+        playerList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Player"
+    PlayerResponse:
+      type: object
+      required:
+        - player
+      properties:
+        player:
+          $ref: "#/components/schemas/Player"
+    Team:
+      type: object
+      required:
+        - uuid
+        - name
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string

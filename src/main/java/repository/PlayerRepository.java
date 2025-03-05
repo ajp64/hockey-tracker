@@ -1,7 +1,5 @@
 package repository;
-
-import model.Player;
-
+import com.rest.server.model.Player;
 import java.util.List;
 
 public interface PlayerRepository {

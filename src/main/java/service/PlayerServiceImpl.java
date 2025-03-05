@@ -1,8 +1,8 @@
 package service;
 
 import aspects.LogExecution;
+import com.rest.server.model.Player;
 import exceptions.NoPlayerNameException;
-import model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.PlayerRepository;
