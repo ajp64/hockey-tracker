@@ -1,6 +1,7 @@
 package controller.advice;
 
 import exceptions.NoPlayerNameException;
+import exceptions.PlayerNotFoundException;
 import model.ErrorDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,15 @@ public class ExceptionControllerAdvice {
     errorDetails.setMessage("No player name provided.");
 
     return ResponseEntity.badRequest().body(errorDetails);
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
+    public ResponseEntity<ErrorDetails> exceptionPlayerNotFoundHandler(PlayerNotFoundException ex)
+    {
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setMessage(ex.getMessage());
+
+        return ResponseEntity.badRequest().body(errorDetails);
     }
 
 }

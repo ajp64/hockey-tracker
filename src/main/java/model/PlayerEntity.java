@@ -1,13 +1,21 @@
 package model;
 
-import java.util.Date;
+import com.rest.server.model.Player;
+import com.rest.server.model.Team;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Player {
+import java.util.List;
+
+@Entity
+public class PlayerEntity extends Player {
 
     @Override
     public String toString() {
         return "Player{" +
-                "uuid='" + uuid + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", dob=" + dob +
                 ", position='" + position + '\'' +
@@ -16,8 +24,12 @@ public class Player {
                 '}';
     }
 
-    public Player(String uuid, String name, Date dob, String position, Team team, String image) {
-        this.uuid = uuid;
+    public PlayerEntity() {
+
+    }
+
+    public PlayerEntity(Long id, String name, String dob, String position, List<Team> team, String image) {
+        this.id = id;
         this.name = name;
         this.dob = dob;
         this.position = position;
@@ -25,13 +37,22 @@ public class Player {
         this.image = image;
     }
 
-    private String uuid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
-    private Date dob;
+    private String dob;
     private String position;
-    private Team team;
+    private List<Team> team;
     private String image;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -40,11 +61,11 @@ public class Player {
         this.name = name;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -56,11 +77,11 @@ public class Player {
         this.position = position;
     }
 
-    public Team getTeam() {
+    public List<Team> getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(List<Team> team) {
         this.team = team;
     }
 

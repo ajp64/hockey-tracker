@@ -1,10 +1,11 @@
 package repository;
-import com.rest.server.model.Player;
+import model.PlayerEntity;
+
 import java.util.List;
 
 public interface PlayerRepository {
 
-    void storePlayer(Player newPlayer);
-    Player getPlayer(String playerId);
-    List<Player> getPlayers();
+    void storePlayer(PlayerEntity newPlayer);
+    PlayerEntity getPlayer(String playerId);
+    List<PlayerEntity> getPlayers();
 }

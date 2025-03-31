@@ -1,14 +1,15 @@
 package service;
 
 import com.rest.server.model.Player;
+import model.PlayerEntity;
 
 import java.util.List;
 
 public interface PlayerService {
 
-    void createPlayer(Player newPlayer);
+    void createPlayer(PlayerEntity newPlayer);
 
-    Player getPlayer(String playerId);
+    PlayerEntity getPlayer(String playerId);
 
     List<Player> getPlayers();
 }

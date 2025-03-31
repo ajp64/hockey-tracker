@@ -35,11 +35,8 @@ components:
     Player:
       type: object
       required:
-        - uuid
         - name
       properties:
-        uuid:
-          type: string
         name:
           type: string
         dob:
@@ -49,7 +46,7 @@ components:
         team:
           type: object
           items:
-            $ref: "#/components/schemas/Player"
+            $ref: "#/components/schemas/Team"
         image:
           type: string
     PlayerListResponse:
@@ -71,10 +68,10 @@ components:
     Team:
       type: object
       required:
-        - uuid
+        - id
         - name
       properties:
-        uuid:
+        id:
           type: string
         name:
           type: string

@@ -2,6 +2,7 @@ package controller;
 
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
+import model.PlayerEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +34,7 @@ public class PlayerControllerTests {
     void testViewPlayers()
     {
         List<Player> expected = List.of(
-                new Player("uuid", "name"));
+                new Player("name"));
 
         when(mockPlayerService.getPlayers()).thenReturn(expected);
 
@@ -45,9 +46,9 @@ public class PlayerControllerTests {
     @Test
     void testCreatePlayer()
     {
-        Player expected = new Player("uuid", "name");
+        PlayerEntity expected = new PlayerEntity(1L, "name", null, null, null, null);
 
-        ResponseEntity<Player> actual = testSubject.createPlayer(expected);
+        ResponseEntity<PlayerEntity> actual = testSubject.createPlayer(expected);
 
         assertThat(Objects.requireNonNull(actual.getBody())).isEqualTo(expected);
     }
