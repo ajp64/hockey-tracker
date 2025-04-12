@@ -1,6 +1,5 @@
 package controller;
 
-import com.rest.server.api.PlayersApi;
 import com.rest.server.model.PlayerListResponse;
 import model.PlayerEntity;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,6 @@ public class PlayerController {
 
     @PostMapping("players")
     public ResponseEntity<PlayerEntity> createPlayer(@RequestBody PlayerEntity player){
-        System.out.println("in controller method");
         playerService.createPlayer(player);
 
         return ResponseEntity

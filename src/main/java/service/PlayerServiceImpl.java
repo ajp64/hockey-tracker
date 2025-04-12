@@ -28,7 +28,6 @@ public class PlayerServiceImpl implements PlayerService {
     @LogExecution
     public void createPlayer(PlayerEntity newPlayer)
     {
-        System.out.println("in service method");
         if (newPlayer.getName() != null) {
             this.playerRepository.storePlayer(newPlayer);
         }

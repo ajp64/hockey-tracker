@@ -23,8 +23,6 @@ public class PlayerRepositoryStubImpl implements PlayerRepository {
     @Override
     @SecurityCheck
     public void storePlayer(PlayerEntity newPlayer) {
-        System.out.println("in repository method");
-
         String sql = "INSERT INTO players (name, dob, position) VALUES (?, ?, ?)";
 
         jdbc.update(sql, newPlayer.getName(), newPlayer.getDob(), newPlayer.getPosition());
