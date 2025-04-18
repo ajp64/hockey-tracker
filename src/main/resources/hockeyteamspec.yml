@@ -36,6 +36,7 @@ components:
       type: object
       required:
         - name
+        - publicId
       properties:
         name:
           type: string
@@ -43,8 +44,11 @@ components:
           type: string
         position:
           type: string
-        team:
-          type: object
+        publicId:
+          type: string
+        teams:
+          type: array
+          uniqueItems: true
           items:
             $ref: "#/components/schemas/Team"
         image:
@@ -68,10 +72,31 @@ components:
     Team:
       type: object
       required:
-        - id
         - name
+        - publicId
       properties:
-        id:
-          type: string
         name:
           type: string
+        publicId:
+          type: string
+        players:
+          type: object
+          items:
+            $ref: "#/components/schemas/Player"
+    TeamListResponse:
+      type: object
+      required:
+        - teamList
+      properties:
+        teamList:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/Team"
+    TeamResponse:
+      type: object
+      required:
+        - team
+      properties:
+        team:
+          $ref: "#/components/schemas/Team"
