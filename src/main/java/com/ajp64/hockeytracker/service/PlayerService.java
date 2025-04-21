@@ -3,13 +3,13 @@ package com.ajp64.hockeytracker.service;
 import com.rest.server.model.Player;
 import com.ajp64.hockeytracker.model.PlayerEntity;
 
-import java.util.List;
+import java.util.Set;
 
 public interface PlayerService {
 
-    void createPlayer(PlayerEntity newPlayer);
+    Player createPlayer(Player newPlayer);
 
-    PlayerEntity getPlayer(String playerId);
+    Player getPlayer(String playerId);
 
-    List<Player> getPlayers();
+    Set<Player> getPlayers();
 }

@@ -5,6 +5,7 @@ import com.ajp64.hockeytracker.model.TeamEntity;
 import com.ajp64.hockeytracker.service.PlayerService;
 import com.ajp64.hockeytracker.service.TeamService;
 import com.rest.server.model.PlayerListResponse;
+import com.rest.server.model.Team;
 import com.rest.server.model.TeamListResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class TeamController {
     }
 
     @GetMapping("teams/{id}")
-    public ResponseEntity<TeamEntity> getTeamById(@PathVariable String id){
+    public ResponseEntity<Team> getTeamById(@PathVariable String id){
         var team = teamService.getTeam(id);
 
         return ResponseEntity
@@ -37,13 +38,11 @@ public class TeamController {
     }
 
     @PostMapping("teams")
-    public ResponseEntity<TeamEntity> createTeam(@RequestBody TeamEntity team){
-        System.out.println("In controller");
-
-        teamService.createTeam(team);
+    public ResponseEntity<Team> createTeam(@RequestBody Team team){
+        Team retval = teamService.createTeam(team);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(team);
+                .body(retval);
     }
 }

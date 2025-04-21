@@ -1,6 +1,5 @@
 package com.ajp64.hockeytracker.controller;
 
-import com.ajp64.hockeytracker.controller.PlayerController;
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
 import com.ajp64.hockeytracker.model.PlayerEntity;
@@ -12,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.ajp64.hockeytracker.service.PlayerService;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -34,8 +33,7 @@ public class PlayerControllerTests {
     @Test
     void testViewPlayers()
     {
-        List<Player> expected = List.of(
-                new Player("name", "publicId"));
+        Set<Player> expected = Set.of(new Player("publicId", "playerName"));
 
         when(mockPlayerService.getPlayers()).thenReturn(expected);
 
@@ -47,9 +45,11 @@ public class PlayerControllerTests {
     @Test
     void testCreatePlayer()
     {
-        PlayerEntity expected = new PlayerEntity(1L, "name", null, null, null, null);
+        Player expected = new Player("playerName", "publicId");
 
-        ResponseEntity<PlayerEntity> actual = testSubject.createPlayer(expected);
+        when(mockPlayerService.createPlayer(expected)).thenReturn(expected);
+
+        ResponseEntity<Player> actual = testSubject.createPlayer(expected);
 
         assertThat(Objects.requireNonNull(actual.getBody())).isEqualTo(expected);
     }

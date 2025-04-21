@@ -35,10 +35,10 @@ components:
     Player:
       type: object
       required:
-        - name
+        - playerName
         - publicId
       properties:
-        name:
+        playerName:
           type: string
         dob:
           type: string
@@ -50,7 +50,23 @@ components:
           type: array
           uniqueItems: true
           items:
-            $ref: "#/components/schemas/Team"
+            $ref: "#/components/schemas/TeamData"
+        image:
+          type: string
+    PlayerData:
+      type: object
+      required:
+        - playerName
+        - publicId
+      properties:
+        playerName:
+          type: string
+        dob:
+          type: string
+        position:
+          type: string
+        publicId:
+          type: string
         image:
           type: string
     PlayerListResponse:
@@ -60,6 +76,7 @@ components:
       properties:
         playerList:
           type: array
+          uniqueItems: true
           items:
             $ref: "#/components/schemas/Player"
     PlayerResponse:
@@ -72,17 +89,28 @@ components:
     Team:
       type: object
       required:
-        - name
+        - teamName
         - publicId
       properties:
-        name:
+        teamName:
           type: string
         publicId:
           type: string
         players:
           type: object
+          uniqueItems: true
           items:
-            $ref: "#/components/schemas/Player"
+            $ref: "#/components/schemas/PlayerData"
+    TeamData:
+      type: object
+      required:
+        - teamName
+        - publicId
+      properties:
+        teamName:
+          type: string
+        publicId:
+          type: string
     TeamListResponse:
       type: object
       required:

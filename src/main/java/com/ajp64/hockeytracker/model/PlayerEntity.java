@@ -13,7 +13,7 @@ public class PlayerEntity {
     public String toString() {
         return "Player{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                ", playerName='" + playerName + '\'' +
                 ", dob=" + dob +
                 ", position='" + position + '\'' +
                 ", teams=" + teams +
@@ -27,7 +27,7 @@ public class PlayerEntity {
 
     public PlayerEntity(Long id, String name, String dob, String position, Set<TeamEntity> teams, String image) {
         this.id = id;
-        this.name = name;
+        this.playerName = name;
         this.dob = dob;
         this.position = position;
         this.teams = teams;
@@ -39,7 +39,7 @@ public class PlayerEntity {
     private Long id;
     @Column(unique = true, nullable = false, updatable = false)
     private String publicId;
-    private String name;
+    private String playerName;
     private String dob;
     private String position;
     @ManyToMany
@@ -71,12 +71,12 @@ public class PlayerEntity {
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
-    public String getName() {
-        return name;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     public String getDob() {

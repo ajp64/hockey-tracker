@@ -1,5 +1,6 @@
 package com.ajp64.hockeytracker.controller;
 
+import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
 import com.ajp64.hockeytracker.model.PlayerEntity;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PlayerController {
     }
 
     @GetMapping("players/{id}")
-    public ResponseEntity<PlayerEntity> getPlayerById(@PathVariable String id){
+    public ResponseEntity<Player> getPlayerById(@PathVariable String id){
         var player = playerService.getPlayer(id);
 
         return ResponseEntity
@@ -34,11 +35,11 @@ public class PlayerController {
     }
 
     @PostMapping("players")
-    public ResponseEntity<PlayerEntity> createPlayer(@RequestBody PlayerEntity player){
-        playerService.createPlayer(player);
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player){
+        Player retval = playerService.createPlayer(player);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(player);
+                .body(retval);
     }
 }
