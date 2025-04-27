@@ -1,10 +1,6 @@
 package com.ajp64.hockeytracker.controller;
 
-import com.ajp64.hockeytracker.model.PlayerEntity;
-import com.ajp64.hockeytracker.model.TeamEntity;
-import com.ajp64.hockeytracker.service.PlayerService;
 import com.ajp64.hockeytracker.service.TeamService;
-import com.rest.server.model.PlayerListResponse;
 import com.rest.server.model.Team;
 import com.rest.server.model.TeamListResponse;
 import org.springframework.http.HttpStatus;

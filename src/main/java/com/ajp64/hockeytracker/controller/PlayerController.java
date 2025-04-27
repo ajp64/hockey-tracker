@@ -2,7 +2,6 @@ package com.ajp64.hockeytracker.controller;
 
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
-import com.ajp64.hockeytracker.model.PlayerEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class PlayerController {
     }
 
     @GetMapping("players")
-    public ResponseEntity<PlayerListResponse> listPlayers(){
+    public ResponseEntity<PlayerListResponse> getPlayers(){
         var players = playerService.getPlayers();
 
         return ResponseEntity

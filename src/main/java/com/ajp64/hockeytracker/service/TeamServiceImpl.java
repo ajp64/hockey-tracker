@@ -41,18 +41,14 @@ public class TeamServiceImpl implements TeamService {
     @LogExecution
     public Team createTeam(Team newTeam)
     {
-        TeamEntity teamEntity = domainConverter.convert(newTeam);
-
-        teamEntity.setPlayers(getPlayersForTeam(newTeam));
-
-        TeamEntity savedVal;
-
-        if (newTeam.getTeamName() != null) {
-            savedVal = this.teamRepository.save(teamEntity);
-        }
-        else {
+        if (newTeam.getTeamName() == null) {
             throw new NoNameException("No team name provided");
         }
+
+        TeamEntity teamEntity = domainConverter.convert(newTeam);
+        teamEntity.setPlayers(getPlayersForTeam(newTeam));
+
+        TeamEntity savedVal = this.teamRepository.save(teamEntity);
 
         return entityConverter.convert(savedVal);
     }

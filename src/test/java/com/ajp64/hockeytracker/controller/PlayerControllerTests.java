@@ -2,7 +2,6 @@ package com.ajp64.hockeytracker.controller;
 
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
-import com.ajp64.hockeytracker.model.PlayerEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,21 +30,33 @@ public class PlayerControllerTests {
     }
 
     @Test
-    void testViewPlayers()
+    void testGetPlayers()
     {
-        Set<Player> expected = Set.of(new Player("publicId", "playerName"));
+        Set<Player> expected = Set.of(new Player("playerName"));
 
         when(mockPlayerService.getPlayers()).thenReturn(expected);
 
-        ResponseEntity<PlayerListResponse> actual = testSubject.listPlayers();
+        ResponseEntity<PlayerListResponse> actual = testSubject.getPlayers();
 
         assertThat(Objects.requireNonNull(actual.getBody()).getPlayerList()).isEqualTo(expected);
     }
 
     @Test
+    void testGetPlayerById()
+    {
+        Player expected = new Player("playerName");
+
+        when(mockPlayerService.getPlayer("publicId")).thenReturn(expected);
+
+        ResponseEntity<Player> actual = testSubject.getPlayerById("publicId");
+
+        assertThat(Objects.requireNonNull(actual.getBody())).isEqualTo(expected);
+    }
+
+    @Test
     void testCreatePlayer()
     {
-        Player expected = new Player("playerName", "publicId");
+        Player expected = new Player("playerName");
 
         when(mockPlayerService.createPlayer(expected)).thenReturn(expected);
 

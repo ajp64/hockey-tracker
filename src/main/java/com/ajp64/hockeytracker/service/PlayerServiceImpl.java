@@ -41,18 +41,14 @@ public class PlayerServiceImpl implements PlayerService {
     @LogExecution
     public Player createPlayer(Player newPlayer)
     {
-        PlayerEntity playerEntity = domainConverter.convert(newPlayer);
-
-        playerEntity.setTeams(getTeamsForPlayer(newPlayer));
-
-        PlayerEntity savedVal;
-
-        if (newPlayer.getPlayerName() != null) {
-            savedVal = this.playerRepository.save(playerEntity);
-        }
-        else {
+        if (newPlayer.getPlayerName() == null) {
             throw new NoNameException("No player name provided");
         }
+
+        PlayerEntity playerEntity = domainConverter.convert(newPlayer);
+        playerEntity.setTeams(getTeamsForPlayer(newPlayer));
+
+        PlayerEntity savedVal = this.playerRepository.save(playerEntity);
 
         return entityConverter.convert(savedVal);
     }

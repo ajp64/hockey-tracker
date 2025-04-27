@@ -36,7 +36,6 @@ components:
       type: object
       required:
         - playerName
-        - publicId
       properties:
         playerName:
           type: string
@@ -90,7 +89,6 @@ components:
       type: object
       required:
         - teamName
-        - publicId
       properties:
         teamName:
           type: string

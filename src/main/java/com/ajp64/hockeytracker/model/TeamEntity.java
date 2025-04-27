@@ -9,12 +9,7 @@ import java.util.UUID;
 @Table(name="teams")
 public class TeamEntity {
 
-    public TeamEntity() {
-
-    }
-    public TeamEntity(String teamName) {
-        this.teamName = teamName;
-    }
+    public TeamEntity() {}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -1,6 +1,5 @@
 package com.ajp64.hockeytracker.converter;
 
-
 import com.ajp64.hockeytracker.model.PlayerEntity;
 import com.rest.server.model.PlayerData;
 import org.springframework.stereotype.Component;

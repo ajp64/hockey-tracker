@@ -21,18 +21,7 @@ public class PlayerEntity {
                 '}';
     }
 
-    public PlayerEntity() {
-
-    }
-
-    public PlayerEntity(Long id, String name, String dob, String position, Set<TeamEntity> teams, String image) {
-        this.id = id;
-        this.playerName = name;
-        this.dob = dob;
-        this.position = position;
-        this.teams = teams;
-        this.image = image;
-    }
+    public PlayerEntity() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
