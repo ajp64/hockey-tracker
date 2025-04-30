@@ -12,10 +12,8 @@ public class TeamEntityToDataConverter {
         final TeamData retval = new TeamData();
 
         retval.setTeamName(teamEntity.getTeamName());
-        retval.publicId(teamEntity.getPublicId());
+        retval.setPublicId(teamEntity.getPublicId());
 
         return retval;
     }
-
-
 }
