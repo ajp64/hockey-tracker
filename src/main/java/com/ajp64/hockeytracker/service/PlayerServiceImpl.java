@@ -1,10 +1,8 @@
 package com.ajp64.hockeytracker.service;
 
 import com.ajp64.hockeytracker.aspects.LogExecution;
-import com.ajp64.hockeytracker.converter.PlayerDomainToEntityConverter;
-import com.ajp64.hockeytracker.converter.PlayerEntityToDomainConverter;
-import com.ajp64.hockeytracker.converter.TeamEntityToDataConverter;
 import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
+import com.ajp64.hockeytracker.mapper.PlayerMapper;
 import com.ajp64.hockeytracker.model.TeamEntity;
 import com.ajp64.hockeytracker.repository.TeamRepository;
 import com.rest.server.model.Player;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,18 +20,15 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
-    private final PlayerEntityToDomainConverter entityConverter;
-    private final PlayerDomainToEntityConverter domainConverter;
+    private final PlayerMapper playerMapper;
 
     @Autowired
     public PlayerServiceImpl(PlayerRepository playerRepository,
                              TeamRepository teamRepository,
-                             PlayerEntityToDomainConverter entityConverter,
-                             PlayerDomainToEntityConverter domainConverter) {
+                             PlayerMapper playerMapper) {
         this.playerRepository = playerRepository;
         this.teamRepository = teamRepository;
-        this.entityConverter = entityConverter;
-        this.domainConverter = domainConverter;
+        this.playerMapper = playerMapper;
     }
 
     @Override
@@ -45,24 +39,25 @@ public class PlayerServiceImpl implements PlayerService {
             throw new NoNameException("No player name provided");
         }
 
-        PlayerEntity playerEntity = domainConverter.convert(newPlayer);
+        PlayerEntity playerEntity = playerMapper.domainToEntity(newPlayer);
+
         playerEntity.setTeams(getTeamsForPlayer(newPlayer));
 
         PlayerEntity savedVal = this.playerRepository.save(playerEntity);
 
-        return entityConverter.convert(savedVal);
+        return playerMapper.entityToDomain(savedVal);
     }
 
     @Override
     public Player getPlayer(String playerId) {
-        return entityConverter.convert(this.playerRepository.findByPublicId(playerId));
+        return playerMapper.entityToDomain(this.playerRepository.findByPublicId(playerId));
     }
 
     @Override
     public Set<Player> getPlayers() {
 
         return this.playerRepository.findAll()
-                .stream().map(entityConverter::convert)
+                .stream().map(playerMapper::entityToDomain)
                 .collect(Collectors.toSet());
     }
 

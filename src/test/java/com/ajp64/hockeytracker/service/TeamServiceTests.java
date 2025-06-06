@@ -1,9 +1,8 @@
 package com.ajp64.hockeytracker.service;
 
-import com.ajp64.hockeytracker.converter.TeamDomainToEntityConverter;
-import com.ajp64.hockeytracker.converter.TeamEntityToDomainConverter;
 import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
+import com.ajp64.hockeytracker.mapper.TeamMapper;
 import com.ajp64.hockeytracker.model.TeamEntity;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 import com.ajp64.hockeytracker.repository.TeamRepository;
@@ -33,16 +32,13 @@ public class TeamServiceTests {
     @Mock
     PlayerRepository mockPlayerRepository;
     @Mock
-    TeamEntityToDomainConverter mockEntityConverter;
-    @Mock
-    TeamDomainToEntityConverter mockDomainConverter;
+    TeamMapper mockTeamMapper;
 
     @BeforeEach
     void setUp(){
         testSubject = new TeamServiceImpl(mockTeamRepository,
                                           mockPlayerRepository,
-                                          mockEntityConverter,
-                                          mockDomainConverter)
+                                          mockTeamMapper)
         {};
     }
 
@@ -56,9 +52,9 @@ public class TeamServiceTests {
         TeamEntity convertedRequest = new TeamEntity();
         convertedRequest.setPublicId("generatedId");
 
-        when(mockDomainConverter.convert(createRequest)).thenReturn(convertedRequest);
+        when(mockTeamMapper.domainToEntity(createRequest)).thenReturn(convertedRequest);
         when(mockTeamRepository.save(convertedRequest)).thenReturn(convertedRequest);
-        when(mockEntityConverter.convert(convertedRequest)).thenReturn(expected);
+        when(mockTeamMapper.entityToDomain(convertedRequest)).thenReturn(expected);
 
         Team actual = testSubject.createTeam(createRequest);
 
@@ -100,7 +96,7 @@ public class TeamServiceTests {
         returnedEntity.setTeamName("teamName");
 
         when(mockTeamRepository.findByPublicId("generatedId")).thenReturn(returnedEntity);
-        when(mockEntityConverter.convert(returnedEntity)).thenReturn(expected);
+        when(mockTeamMapper.entityToDomain(returnedEntity)).thenReturn(expected);
 
         Team actual = testSubject.getTeam("generatedId");
 
@@ -119,7 +115,7 @@ public class TeamServiceTests {
 
         List<TeamEntity> returnedEntities = List.of(returnedEntity1, returnedEntity2);
 
-        when(mockEntityConverter.convert(any(TeamEntity.class))).thenAnswer(invocation -> {
+        when(mockTeamMapper.entityToDomain(any(TeamEntity.class))).thenAnswer(invocation -> {
             TeamEntity entity = invocation.getArgument(0);
             return new Team(entity.getTeamName());
         });
