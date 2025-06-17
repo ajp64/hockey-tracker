@@ -32,6 +32,52 @@ paths:
           description: 'OK'
 components:
   schemas:
+    League:
+      type: object
+      required:
+        - leagueName
+      properties:
+        leagueName:
+          type: string
+        publicId:
+          type: string
+        teams:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/TeamData"
+        players:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/PlayerData"
+    LeagueData:
+      type: object
+      required:
+        - leagueName
+        - publicId
+      properties:
+        leagueName:
+          type: string
+        publicId:
+          type: string
+    LeagueListResponse:
+      type: object
+      required:
+        - leagueList
+      properties:
+        leagueList:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/League"
+    LeagueResponse:
+      type: object
+      required:
+        - league
+      properties:
+        league:
+          $ref: "#/components/schemas/League"
     Player:
       type: object
       required:
@@ -50,6 +96,11 @@ components:
           uniqueItems: true
           items:
             $ref: "#/components/schemas/TeamData"
+        leagues:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/LeagueData"
         image:
           type: string
     PlayerData:
@@ -99,6 +150,11 @@ components:
           uniqueItems: true
           items:
             $ref: "#/components/schemas/PlayerData"
+        leagues:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/LeagueData"
     TeamData:
       type: object
       required:
