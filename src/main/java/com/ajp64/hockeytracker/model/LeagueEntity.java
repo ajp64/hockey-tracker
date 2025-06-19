@@ -9,34 +9,15 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name="leagues")
-public class LeagueEntity {
+public class LeagueEntity extends BaseEntity {
 
     public LeagueEntity() {}
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String leagueName;
-    @Column(unique = true, nullable = false, updatable = false)
-    private String publicId;
-
     @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LeaguePlayer> playerMapping = new HashSet<>();
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LeagueTeam> teamMapping = new HashSet<>();
-
-    @PrePersist
-    public void generatePublicId() {
-        this.publicId = UUID.randomUUID().toString();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getTeamName() {
         return leagueName;
@@ -44,14 +25,6 @@ public class LeagueEntity {
 
     public void setTeamName(String teamName) {
         this.leagueName = teamName;
-    }
-
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
     }
     @Transient
     public Set<PlayerEntity> getPlayers() {

@@ -4,17 +4,16 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "players")
-public class PlayerEntity {
+public class PlayerEntity extends BaseEntity {
 
     @Override
     public String toString() {
         return "Player{" +
-                "id='" + id + '\'' +
+                "id='" + getId() + '\'' +
                 ", playerName='" + playerName + '\'' +
                 ", dob=" + dob +
                 ", position='" + position + '\'' +
@@ -24,12 +23,6 @@ public class PlayerEntity {
     }
 
     public PlayerEntity() {}
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(unique = true, nullable = false, updatable = false)
-    private String publicId;
     private String playerName;
     private String dob;
     private String position;
@@ -38,27 +31,6 @@ public class PlayerEntity {
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LeaguePlayer> leagueMapping = new HashSet<>();
     private String image;
-
-    @PrePersist
-    public void generatePublicId() {
-        this.publicId = UUID.randomUUID().toString();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
-    }
     public String getPlayerName() {
         return playerName;
     }

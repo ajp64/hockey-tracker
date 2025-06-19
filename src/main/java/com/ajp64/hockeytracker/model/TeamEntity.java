@@ -9,49 +9,19 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name="teams")
-public class TeamEntity {
+public class TeamEntity extends BaseEntity {
 
     public TeamEntity() {}
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String teamName;
-    @Column(unique = true, nullable = false, updatable = false)
-    private String publicId;
-
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TeamPlayer> playerMapping = new HashSet<>();
-
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LeagueTeam> leagueMapping = new HashSet<>();
-
-    @PrePersist
-    public void generatePublicId() {
-        this.publicId = UUID.randomUUID().toString();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getTeamName() {
         return teamName;
     }
-
     public void setTeamName(String teamName) {
         this.teamName = teamName;
-    }
-
-    public String getPublicId() {
-        return publicId;
-    }
-
-    public void setPublicId(String publicId) {
-        this.publicId = publicId;
     }
 
     @Transient
