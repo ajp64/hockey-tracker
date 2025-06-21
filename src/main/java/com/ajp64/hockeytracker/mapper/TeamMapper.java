@@ -9,9 +9,9 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface TeamMapper {
-
     TeamMapper INSTANCE = Mappers.getMapper( TeamMapper.class );
     @Mapping(target = "players", ignore = true)
+    @Mapping(target = "leagues", ignore = true)
     TeamEntity domainToEntity(Team domain);
     Team entityToDomain(TeamEntity entity);
     TeamData entityToData(TeamEntity entity);

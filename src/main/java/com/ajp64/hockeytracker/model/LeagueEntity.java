@@ -19,12 +19,12 @@ public class LeagueEntity extends BaseEntity {
     @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<LeagueTeam> teamMapping = new HashSet<>();
 
-    public String getTeamName() {
+    public String getLeagueName() {
         return leagueName;
     }
 
-    public void setTeamName(String teamName) {
-        this.leagueName = teamName;
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
     }
     @Transient
     public Set<PlayerEntity> getPlayers() {

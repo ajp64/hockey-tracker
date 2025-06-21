@@ -9,9 +9,9 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface PlayerMapper {
-
     PlayerMapper INSTANCE = Mappers.getMapper( PlayerMapper.class );
     @Mapping(target = "teams", ignore = true)
+    @Mapping(target = "leagues", ignore = true)
     PlayerEntity domainToEntity(Player domain);
     Player entityToDomain(PlayerEntity entity);
     PlayerData entityToData(PlayerEntity entity);
