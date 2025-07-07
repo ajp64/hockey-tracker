@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
@@ -51,7 +50,7 @@ public class LeagueEntity extends BaseEntity {
         this.playerMapping.add(leaguePlayer);
     }
 
-    void removePLayer(PlayerEntity player) {
+    void removePlayer(PlayerEntity player) {
         this.playerMapping.removeIf(playerMapping -> playerMapping.getPlayer().equals(player));
     }
 

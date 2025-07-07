@@ -4,6 +4,7 @@ import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
 import com.ajp64.hockeytracker.mapper.PlayerMapper;
 import com.ajp64.hockeytracker.model.PlayerEntity;
+import com.ajp64.hockeytracker.repository.LeagueRepository;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 import com.ajp64.hockeytracker.repository.TeamRepository;
 import com.rest.server.model.Player;
@@ -31,6 +32,8 @@ public class PlayerServiceTests {
     @Mock
     TeamRepository mockTeamRepository;
     @Mock
+    LeagueRepository mockLeagueRepository;
+    @Mock
     PlayerMapper mockPlayerMapper;
 
     @BeforeEach
@@ -38,6 +41,7 @@ public class PlayerServiceTests {
         testSubject = new PlayerServiceImpl(
                 mockPlayerRepository,
                 mockTeamRepository,
+                mockLeagueRepository,
                 mockPlayerMapper)
         {};
     }
@@ -82,7 +86,7 @@ public class PlayerServiceTests {
             testSubject.createPlayer(createRequest);
         });
 
-        assertEquals("Team not found with id: invalidId", exception.getMessage());
+        assertEquals("Some Teams were not found.", exception.getMessage());
     }
 
     @Test

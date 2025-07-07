@@ -4,6 +4,7 @@ import com.ajp64.hockeytracker.mapper.LeagueMapper;
 import com.ajp64.hockeytracker.model.LeagueEntity;
 import com.ajp64.hockeytracker.repository.LeagueRepository;
 import com.rest.server.model.League;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class LeagueServiceImpl implements LeagueService{
 
     private final LeagueRepository leagueRepository;

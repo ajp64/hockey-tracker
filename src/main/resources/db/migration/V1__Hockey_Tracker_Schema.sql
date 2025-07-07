@@ -5,6 +5,9 @@ CREATE TABLE IF NOT EXISTS hockey_tracker.players (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     player_Name VARCHAR(255),
     public_Id VARCHAR(255),
+    dob VARCHAR(255),
+    position VARCHAR(255),
+    image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -31,6 +34,7 @@ CREATE TABLE IF NOT EXISTS hockey_tracker.league_players (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     league_id BIGINT NOT NULL,
     player_id BIGINT NOT NULL,
+    status VARCHAR(255),
 
     CONSTRAINT uq_league_player UNIQUE (league_id, player_id),
     CONSTRAINT fk_league_player_league FOREIGN KEY (league_id) REFERENCES leagues(id),
@@ -51,8 +55,12 @@ CREATE TABLE IF NOT EXISTS hockey_tracker.team_players (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     team_id BIGINT NOT NULL,
     player_id BIGINT NOT NULL,
+    league_id BIGINT,
+    role VARCHAR(255),
+    joined_at VARCHAR(255),
 
-    CONSTRAINT uq_team_player UNIQUE (team_id, player_id),
+    CONSTRAINT uq_team_player UNIQUE (team_id, player_id, league_id),
     CONSTRAINT fk_team FOREIGN KEY (team_id) REFERENCES teams(id),
-    CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES players(id)
+    CONSTRAINT fk_player FOREIGN KEY (player_id) REFERENCES players(id),
+    CONSTRAINT fk_league FOREIGN KEY (league_id) REFERENCES leagues(id)
 );

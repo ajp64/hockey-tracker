@@ -3,12 +3,17 @@ package com.ajp64.hockeytracker.service;
 import com.ajp64.hockeytracker.aspects.LogExecution;
 import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
 import com.ajp64.hockeytracker.mapper.TeamMapper;
+import com.ajp64.hockeytracker.model.LeagueEntity;
 import com.ajp64.hockeytracker.model.PlayerEntity;
 import com.ajp64.hockeytracker.model.TeamEntity;
+import com.ajp64.hockeytracker.repository.LeagueRepository;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 import com.ajp64.hockeytracker.repository.TeamRepository;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
+import com.rest.server.model.LeagueData;
+import com.rest.server.model.PlayerData;
 import com.rest.server.model.Team;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +21,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final LeagueRepository leagueRepository;
     private final TeamMapper teamMapper;
 
     @Autowired
     public TeamServiceImpl(TeamRepository teamRepository,
                            PlayerRepository playerRepository,
+                           LeagueRepository leagueRepository,
                            TeamMapper teamMapper) {
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
+        this.leagueRepository = leagueRepository;
         this.teamMapper = teamMapper;
     }
 
@@ -41,6 +50,7 @@ public class TeamServiceImpl implements TeamService {
 
         TeamEntity teamEntity = teamMapper.domainToEntity(newTeam);
         teamEntity.setPlayers(getPlayersForTeam(newTeam));
+        teamEntity.setLeagues(getLeaguesForTeam(newTeam));
 
         TeamEntity savedVal = this.teamRepository.save(teamEntity);
 
@@ -62,14 +72,28 @@ public class TeamServiceImpl implements TeamService {
     }
 
     private Set<PlayerEntity> getPlayersForTeam(Team team) {
-        return team.getPlayers().stream()
-                .map(player -> {
-                    PlayerEntity playerEntity = playerRepository.findByPublicId(player.getPublicId());
-                    if (playerEntity == null) {
-                        throw new EntityNotFoundException("Player not found with id: " + player.getPublicId());
-                    }
-                    return playerEntity;
-                })
-                .collect(Collectors.toSet());
+        final Set<String> playerIds = team.getPlayers().stream()
+                .map(PlayerData::getPublicId).collect(Collectors.toSet());
+
+        Set<PlayerEntity> retVal =  playerRepository.findAllByPublicIdIn(playerIds);
+
+        if (retVal.size() != playerIds.size()) {
+            throw new EntityNotFoundException("Some Players were not found.");
+        }
+
+        return retVal;
+    }
+
+    private Set<LeagueEntity> getLeaguesForTeam(Team team) {
+        final Set<String> leagueIds = team.getLeagues().stream()
+                .map(LeagueData::getPublicId).collect(Collectors.toSet());
+
+        Set<LeagueEntity> retVal = leagueRepository.findAllByPublicIdIn(leagueIds);
+
+        if (retVal.size() != leagueIds.size()) {
+            throw new EntityNotFoundException("Some Leagues were not found.");
+        }
+
+        return retVal;
     }
 }
