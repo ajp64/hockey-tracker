@@ -4,9 +4,9 @@ import com.ajp64.hockeytracker.mapper.LeagueMapper;
 import com.ajp64.hockeytracker.model.LeagueEntity;
 import com.ajp64.hockeytracker.repository.LeagueRepository;
 import com.rest.server.model.League;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,13 +24,13 @@ public class LeagueServiceImpl implements LeagueService{
         this.leagueMapper = leagueMapper;
         this.leagueRepository = leagueRepository;
     }
-
+    @Transactional(readOnly = true)
     public Set<League> getLeagues() {
         return this.leagueRepository.findAll().stream()
                 .map(leagueMapper::entityToDomain)
                 .collect(Collectors.toSet());
     }
-
+    @Transactional(readOnly = true)
     public League getLeague(String leagueId) {
         LeagueEntity entity = this.leagueRepository.findByPublicId(leagueId);
 

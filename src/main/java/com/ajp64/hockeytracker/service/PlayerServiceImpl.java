@@ -12,13 +12,13 @@ import com.rest.server.model.Player;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
 import com.ajp64.hockeytracker.model.PlayerEntity;
 import com.rest.server.model.TeamData;
-import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,16 +61,33 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Player getPlayer(String playerId) {
-        return playerMapper.entityToDomain(this.playerRepository.findByPublicId(playerId));
+        PlayerEntity playerEntity = this.playerRepository.findByPublicId(playerId)
+                .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + playerId));
+
+        return playerMapper.entityToDomain(playerEntity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Player> getPlayers() {
 
         return this.playerRepository.findAll()
                 .stream().map(playerMapper::entityToDomain)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Player updatePlayer(String guid, Player update) {
+        PlayerEntity playerToUpdate = this.playerRepository.findByPublicId(guid)
+                .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + guid));
+
+        BeanUtils.copyProperties(update, playerToUpdate, "id", "publicId", "leagues", "teams");
+        playerToUpdate.setLeagues(getLeaguesForPlayer(update));
+        playerToUpdate.setTeams(getTeamsForPlayer(update));
+
+        return playerMapper.entityToDomain(playerRepository.save(playerToUpdate));
     }
 
     private Set<TeamEntity> getTeamsForPlayer(Player player) {

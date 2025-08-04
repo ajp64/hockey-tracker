@@ -1,5 +1,6 @@
 package com.ajp64.hockeytracker.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,12 +22,13 @@ public class PlayerControllerTests {
 
     @Mock
     private PlayerService mockPlayerService;
-
+    @Mock
+    private ObjectMapper mockObjectMapper;
     private PlayerController testSubject;
 
     @BeforeEach
     void setUp(){
-        testSubject = new PlayerController(mockPlayerService);
+        testSubject = new PlayerController(mockPlayerService, mockObjectMapper);
     }
 
     @Test

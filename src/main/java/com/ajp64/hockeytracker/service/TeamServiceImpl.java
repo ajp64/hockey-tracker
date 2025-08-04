@@ -13,9 +13,9 @@ import com.ajp64.hockeytracker.exceptions.NoNameException;
 import com.rest.server.model.LeagueData;
 import com.rest.server.model.PlayerData;
 import com.rest.server.model.Team;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,12 +58,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Team getTeam(String teamId)
     {
         return teamMapper.entityToDomain(teamRepository.findByPublicId(teamId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Team> getTeams() {
 
         return this.teamRepository.findAll()

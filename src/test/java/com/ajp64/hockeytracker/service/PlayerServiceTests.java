@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,7 +100,7 @@ public class PlayerServiceTests {
         returnedEntity.setPublicId("generatedId");
         returnedEntity.setPlayerName("playerName");
 
-        when(mockPlayerRepository.findByPublicId("generatedId")).thenReturn(returnedEntity);
+        when(mockPlayerRepository.findByPublicId("generatedId")).thenReturn(Optional.of(returnedEntity));
         when(mockPlayerMapper.entityToDomain(returnedEntity)).thenReturn(expected);
 
         Player actual = testSubject.getPlayer("generatedId");
