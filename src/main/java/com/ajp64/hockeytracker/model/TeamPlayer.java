@@ -26,20 +26,44 @@ public class TeamPlayer {
     private String role;
     private LocalDate joinedAt;
 
-    TeamEntity getTeam() {
+    public TeamEntity getTeam() {
         return this.team;
     }
 
-    void setTeam(TeamEntity team){
+    public void setTeam(TeamEntity team){
         this.team = team;
     }
 
-    PlayerEntity getPlayer(){
+    public PlayerEntity getPlayer(){
         return this.player;
     }
 
-    void setPlayer(PlayerEntity player){
+    public void setPlayer(PlayerEntity player){
         this.player = player;
+    }
+
+    public LeagueEntity getLeague() {
+        return league;
+    }
+
+    public void setLeague(LeagueEntity league) {
+        this.league = league;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public LocalDate getJoinedAt() {
+        return joinedAt;
+    }
+
+    public void setJoinedAt(LocalDate joinedAt) {
+        this.joinedAt = joinedAt;
     }
 }
 

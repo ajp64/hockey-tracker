@@ -21,15 +21,23 @@ public class LeaguePlayer {
 
     private String status;
 
-    void setPlayer(PlayerEntity player) {
+    public void setPlayer(PlayerEntity player) {
         this.player = player;
     }
 
-    PlayerEntity getPlayer() { return this.player; }
+    public PlayerEntity getPlayer() { return this.player; }
 
-    void setLeague(LeagueEntity league) {
+    public void setLeague(LeagueEntity league) {
         this.league = league;
     }
 
-    LeagueEntity getLeague() { return this.league; }
+    public LeagueEntity getLeague() { return this.league; }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

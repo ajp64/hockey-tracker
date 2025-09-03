@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ajp64.hockeytracker.repository.PlayerRepository;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -110,9 +109,17 @@ public class PlayerServiceImpl implements PlayerService {
         Set<LeagueEntity> retVal = leagueRepository.findAllByPublicIdIn(leagueIds);
 
         if (retVal.size() != leagueIds.size()) {
-            throw new EntityNotFoundException("Some Teams were not found.");
+            throw new EntityNotFoundException("Some Leagues were not found.");
         }
 
         return retVal;
+    }
+
+    @Override
+    public void deletePlayer(String guid) {
+        PlayerEntity playerToDelete = this.playerRepository.findByPublicId(guid)
+                .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + guid));
+        
+        this.playerRepository.delete(playerToDelete);
     }
 }
