@@ -61,7 +61,10 @@ public class TeamServiceImpl implements TeamService {
     @Transactional(readOnly = true)
     public Team getTeam(String teamId)
     {
-        return teamMapper.entityToDomain(teamRepository.findByPublicId(teamId));
+        TeamEntity teamEntity = this.teamRepository.findByPublicId(teamId)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found for guid: " + teamId));
+        
+        return teamMapper.entityToDomain(teamEntity);
     }
 
     @Override
@@ -97,5 +100,26 @@ public class TeamServiceImpl implements TeamService {
         }
 
         return retVal;
+    }
+
+    @Override
+    public Team updateTeam(String guid, Team update) {
+        TeamEntity teamToUpdate = this.teamRepository.findByPublicId(guid)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found for guid: " + guid));
+
+        // Update basic properties
+        teamToUpdate.setTeamName(update.getTeamName());
+        teamToUpdate.setPlayers(getPlayersForTeam(update));
+        teamToUpdate.setLeagues(getLeaguesForTeam(update));
+
+        return teamMapper.entityToDomain(teamRepository.save(teamToUpdate));
+    }
+
+    @Override
+    public void deleteTeam(String guid) {
+        TeamEntity teamToDelete = this.teamRepository.findByPublicId(guid)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found for guid: " + guid));
+        
+        this.teamRepository.delete(teamToDelete);
     }
 }

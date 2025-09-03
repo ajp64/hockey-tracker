@@ -11,6 +11,10 @@ public interface TeamService{
 
     Team getTeam(String teamId);
 
+    Team updateTeam(String guid, Team updatedTeam);
+
     Set<Team> getTeams();
+
+    void deleteTeam(String guid);
 }
 

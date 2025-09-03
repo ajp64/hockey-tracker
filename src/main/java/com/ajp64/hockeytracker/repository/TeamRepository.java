@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
 
-    TeamEntity findByPublicId(String teamId);
+    Optional<TeamEntity> findByPublicId(String teamId);
     Set<TeamEntity> findAllByPublicIdIn(final Set<String> teamIds);
     @NonNull
     List<TeamEntity> findAll();
