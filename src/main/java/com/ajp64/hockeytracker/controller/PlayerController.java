@@ -3,6 +3,7 @@ package com.ajp64.hockeytracker.controller;
 import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
 import com.rest.server.model.Player;
 import com.rest.server.model.PlayerListResponse;
+import com.rest.server.model.PlayerTeamsUpdate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,34 @@ public class PlayerController {
     public ResponseEntity<Player> updatePlayer(@PathVariable @NotBlank String guid, 
                                             @RequestBody @Valid Player player) {
         try {
+            // Enforce client responsibility: body must include matching publicId
+            String bodyPublicId = player.getPublicId();
+            if (bodyPublicId == null || bodyPublicId.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            if (!guid.equals(bodyPublicId)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
             Player updatedPlayer = playerService.updatePlayer(guid, player);
+            return ResponseEntity.ok(updatedPlayer);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/players/{guid}/teams")
+    public ResponseEntity<Player> updatePlayerTeams(@PathVariable @NotBlank String guid,
+                                               @RequestBody @Valid PlayerTeamsUpdate update) {
+        try {
+            // Enforce client responsibility: body must include matching publicId
+            String bodyPublicId = update.getPublicId();
+            if (bodyPublicId == null || bodyPublicId.isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            if (!guid.equals(bodyPublicId)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            Player updatedPlayer = playerService.updatePlayerTeams(guid, update);
             return ResponseEntity.ok(updatedPlayer);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

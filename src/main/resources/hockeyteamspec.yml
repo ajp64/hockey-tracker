@@ -6,8 +6,8 @@ info:
 paths:
   /players:
     get:
-      operationId: listPlayers
-      tags: [Players]
+      operationId: getPlayers
+      tags: [getPlayers]
       responses:
         '200':
           content:
@@ -29,6 +29,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Player"
+          description: 'OK'
+  /players/{guid}:
+    get:
+      operationId: getPlayerByGuid
+      tags: [getPlayer]
+      parameters:
+        - in: path
+          name: guid
+          required: true
+          schema:
+            type: string
+          description: The player ID.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+          description: 'OK'
+    put:
+      operationId: updatePlayerByGuid
+      tags: [ updatePlayer ]
+      parameters:
+        - in: path
+          name: guid
+          required: true
+          schema:
+            type: string
+          description: The player guid.
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+          description: 'OK'
+    delete:
+      operationId: deletePlayerByGuid
+      tags: [ deletePlayer ]
+      parameters:
+        - in: path
+          name: guid
+          required: true
+          schema:
+            type: string
+          description: The player guid.
+      responses:
+        '200':
           description: 'OK'
 components:
   schemas:
@@ -136,6 +184,37 @@ components:
       properties:
         player:
           $ref: "#/components/schemas/Player"
+    PlayerCoreDetailUpdate:
+      type: object
+      required:
+        - playerDate
+      properties:
+        playerData:
+          $ref: "#/components/schemas/Player"
+    PlayerLeaguesUpdate:
+      type: object
+      required:
+        - playerLeagues
+        - playerGuid
+      properties:
+        publicId:
+          type: string
+        playerLeagues:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeagueData"
+    PlayerTeamsUpdate:
+      type: object
+      required:
+        - playerTeams
+        - playerGuid
+      properties:
+        publicId:
+          type: string
+        playerTeams:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeamData"
     Team:
       type: object
       required:

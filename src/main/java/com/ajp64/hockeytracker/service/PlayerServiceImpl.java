@@ -11,6 +11,7 @@ import com.rest.server.model.LeagueData;
 import com.rest.server.model.Player;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
 import com.ajp64.hockeytracker.model.PlayerEntity;
+import com.rest.server.model.PlayerTeamsUpdate;
 import com.rest.server.model.TeamData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,21 @@ public class PlayerServiceImpl implements PlayerService {
         BeanUtils.copyProperties(update, playerToUpdate, "id", "publicId", "leagues", "teams");
         playerToUpdate.setLeagues(getLeaguesForPlayer(update));
         playerToUpdate.setTeams(getTeamsForPlayer(update));
+
+        return playerMapper.entityToDomain(playerRepository.save(playerToUpdate));
+    }
+
+    @Override
+    public Player updatePlayerTeams(String guid, PlayerTeamsUpdate update) {
+        PlayerEntity playerToUpdate = this.playerRepository.findByPublicId(guid)
+                .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + guid));
+
+        final Set<String> teamIds = update.getPlayerTeams().stream()
+                .map(TeamData::getPublicId).collect(Collectors.toSet());
+
+        Set<TeamEntity> retVal =  teamRepository.findAllByPublicIdIn(teamIds);
+
+        playerToUpdate.setTeams(retVal);
 
         return playerMapper.entityToDomain(playerRepository.save(playerToUpdate));
     }

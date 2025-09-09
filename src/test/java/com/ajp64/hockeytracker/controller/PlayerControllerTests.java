@@ -72,6 +72,7 @@ public class PlayerControllerTests {
     {
         String playerId = "test-player-id";
         Player updatePlayer = new Player("updatedPlayerName");
+        updatePlayer.setPublicId(playerId);
         Player expected = new Player("updatedPlayerName");
 
         when(mockPlayerService.updatePlayer(playerId, updatePlayer)).thenReturn(expected);
@@ -87,6 +88,7 @@ public class PlayerControllerTests {
     {
         String playerId = "non-existent-id";
         Player updatePlayer = new Player("updatedPlayerName");
+        updatePlayer.setPublicId(playerId);
 
         when(mockPlayerService.updatePlayer(playerId, updatePlayer))
                 .thenThrow(new EntityNotFoundException("Player not found for guid: " + playerId));
