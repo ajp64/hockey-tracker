@@ -79,7 +79,9 @@ public class TeamServiceTests {
     void testCreateTeamWithInvalidPlayer()
     {
         Team createRequest = new Team("teamName");
-        createRequest.setPlayers(Set.of(new PlayerData("playerName", "invalidId")));
+        PlayerData player = new PlayerData("playerName");
+        player.setPublicId("invalidId");
+        createRequest.setPlayers(Set.of(player));
 
         when(mockPlayerRepository.findByPublicId("invalidId")).thenReturn(null);
 

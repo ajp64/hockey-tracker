@@ -7,12 +7,9 @@ import com.ajp64.hockeytracker.model.LeagueEntity;
 import com.ajp64.hockeytracker.model.TeamEntity;
 import com.ajp64.hockeytracker.repository.LeagueRepository;
 import com.ajp64.hockeytracker.repository.TeamRepository;
-import com.rest.server.model.LeagueData;
-import com.rest.server.model.Player;
+import com.rest.server.model.*;
 import com.ajp64.hockeytracker.exceptions.NoNameException;
 import com.ajp64.hockeytracker.model.PlayerEntity;
-import com.rest.server.model.PlayerTeamsUpdate;
-import com.rest.server.model.TeamData;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,13 +76,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player updatePlayer(String guid, Player update) {
+    public Player updatePlayerDetails(String guid, PlayerCoreDetailUpdate update) {
         PlayerEntity playerToUpdate = this.playerRepository.findByPublicId(guid)
                 .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + guid));
 
-        BeanUtils.copyProperties(update, playerToUpdate, "id", "publicId", "leagues", "teams");
-        playerToUpdate.setLeagues(getLeaguesForPlayer(update));
-        playerToUpdate.setTeams(getTeamsForPlayer(update));
+        BeanUtils.copyProperties(update.getUpdatedPlayerData(), playerToUpdate, "id", "publicId", "leagues", "teams");
 
         return playerMapper.entityToDomain(playerRepository.save(playerToUpdate));
     }
@@ -95,7 +90,7 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerEntity playerToUpdate = this.playerRepository.findByPublicId(guid)
                 .orElseThrow(() -> new EntityNotFoundException("Player not found for guid: " + guid));
 
-        final Set<String> teamIds = update.getPlayerTeams().stream()
+        final Set<String> teamIds = update.getUpdatedTeams().stream()
                 .map(TeamData::getPublicId).collect(Collectors.toSet());
 
         Set<TeamEntity> retVal =  teamRepository.findAllByPublicIdIn(teamIds);

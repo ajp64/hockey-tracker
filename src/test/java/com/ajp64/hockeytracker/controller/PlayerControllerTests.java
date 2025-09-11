@@ -2,6 +2,8 @@ package com.ajp64.hockeytracker.controller;
 
 import com.ajp64.hockeytracker.exceptions.EntityNotFoundException;
 import com.rest.server.model.Player;
+import com.rest.server.model.PlayerCoreDetailUpdate;
+import com.rest.server.model.PlayerData;
 import com.rest.server.model.PlayerListResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -70,14 +73,13 @@ public class PlayerControllerTests {
     @Test
     void testUpdatePlayer()
     {
-        String playerId = "test-player-id";
-        Player updatePlayer = new Player("updatedPlayerName");
-        updatePlayer.setPublicId(playerId);
+        String playerId = "playerId";
+        PlayerCoreDetailUpdate update = new PlayerCoreDetailUpdate(new PlayerData("updatedPlayerName"));
         Player expected = new Player("updatedPlayerName");
 
-        when(mockPlayerService.updatePlayer(playerId, updatePlayer)).thenReturn(expected);
+        when(mockPlayerService.updatePlayerDetails(playerId, update)).thenReturn(expected);
 
-        ResponseEntity<Player> actual = testSubject.updatePlayer(playerId, updatePlayer);
+        ResponseEntity<Player> actual = testSubject.updatePlayerDetails(playerId, update);
 
         assertThat(Objects.requireNonNull(actual.getBody())).isEqualTo(expected);
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -87,13 +89,19 @@ public class PlayerControllerTests {
     void testUpdatePlayerNotFound()
     {
         String playerId = "non-existent-id";
-        Player updatePlayer = new Player("updatedPlayerName");
-        updatePlayer.setPublicId(playerId);
+        PlayerCoreDetailUpdate update = new PlayerCoreDetailUpdate(new PlayerData("updatedPlayerName"));
 
-        when(mockPlayerService.updatePlayer(playerId, updatePlayer))
+        when(mockPlayerService.updatePlayerDetails(playerId, update))
                 .thenThrow(new EntityNotFoundException("Player not found for guid: " + playerId));
 
-        ResponseEntity<Player> actual = testSubject.updatePlayer(playerId, updatePlayer);
+        ResponseEntity<Player> actual;
+
+        try {
+            actual = testSubject.updatePlayerDetails(playerId, update);
+            fail("Expected EntityNotFoundException");
+        } catch (EntityNotFoundException ex) {
+            actual = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(actual.getBody()).isNull();

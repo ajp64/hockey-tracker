@@ -155,7 +155,6 @@ components:
       type: object
       required:
         - playerName
-        - publicId
       properties:
         playerName:
           type: string
@@ -187,31 +186,25 @@ components:
     PlayerCoreDetailUpdate:
       type: object
       required:
-        - playerDate
+        - updatedPlayerData
       properties:
-        playerData:
-          $ref: "#/components/schemas/Player"
+        updatedPlayerData:
+          $ref: "#/components/schemas/PlayerData"
     PlayerLeaguesUpdate:
       type: object
       required:
-        - playerLeagues
-        - playerGuid
+        - updatedLeagues
       properties:
-        publicId:
-          type: string
-        playerLeagues:
+        updatedLeagues:
           type: array
           items:
             $ref: "#/components/schemas/LeagueData"
     PlayerTeamsUpdate:
       type: object
       required:
-        - playerTeams
-        - playerGuid
+        - updatedTeams
       properties:
-        publicId:
-          type: string
-        playerTeams:
+        updatedTeams:
           type: array
           items:
             $ref: "#/components/schemas/TeamData"
